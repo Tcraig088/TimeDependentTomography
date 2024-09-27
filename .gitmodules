@@ -1,3 +1,9 @@
 [submodule "submodules/tomobase"]
 	path = submodules/tomobase
 	url = https://github.com/Tcraig088/tomobase.git
+[submodule "submodules/tomoacquire"]
+	path = submodules/tomoacquire
+	url = https://github.com/Tcraig088/tomoacquire.git
+[submodule "submodules/tdtomonapari"]
+	path = submodules/tdtomonapari
+	url = https://github.com/Tcraig088/tdtomonapari.git
