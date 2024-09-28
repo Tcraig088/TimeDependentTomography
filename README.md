@@ -42,5 +42,5 @@ conda install tdtomo cudatoolkit=X.XX -c TCraig088 -c conda-forge
 conda install tdtomo['all'] cudatoolkit=X.XX pyqt -c TCraig088 -c conda-forge
 ```
 
-## 2. Usage
+## 3. Usage
 To use the library please read the usage guide for the various submodules. [**TDTomoNapari**](https://google.co.nz) has a good guide on how to run the GUI for a beginner.

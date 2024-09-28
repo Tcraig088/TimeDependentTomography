@@ -1,0 +1,37 @@
+package:
+  name: tdtomo
+  version: {{ version }}
+
+source:
+  path: ..
+
+build:
+  noarch: python
+  script: "{{ PYTHON }} -m pip install -e ."
+
+requirements:
+  host:
+    - python >=3.10
+    - pip
+  run:
+    - python >=3.10
+    - tomobase
+    - tomoacquire
+    - tdtomonapari
+
+channels:
+  - conda-forge
+  - defaults
+  - TCraig088
+about:
+  home: https://github.com/Tcraig088/tdtomo
+  license: GPL3.0
+  license_family: GPL
+  summary: A library for processing time dependent tomography data.
+  description: |
+    A library for processing time dependent tomography data.
+  license_file: ../LICENSE
+
+extra:
+  recipe-maintainers:
+    - tcraig258
