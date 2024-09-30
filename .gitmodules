@@ -7,7 +7,6 @@
 [submodule "submodules/tdtomonapari"]
 	path = submodules/tdtomonapari
 	url = https://github.com/Tcraig088/tdtomonapari.git
-
 [submodule "submodules/tdcontroller"]
 	path = submodules/tdcontroller
-	url = https://github.com/Tcraig088/tdcontroller
+	url = https://github.com/Tcraig088/tdcontroller.git
