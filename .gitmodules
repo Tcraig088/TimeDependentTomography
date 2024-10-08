@@ -10,3 +10,9 @@
 [submodule "submodules/tdcontroller"]
 	path = submodules/tdcontroller
 	url = https://github.com/Tcraig088/tdcontroller.git
+[submodule "submodule"]
+	path = submodule
+	url = https://github.com/TCraig088/tomondt.git
+[submodule "submodules/tomondt"]
+	path = submodules/tomondt
+	url = https://github.com/TCraig088/tomondt.git
