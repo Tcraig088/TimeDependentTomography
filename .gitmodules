@@ -13,3 +13,6 @@
 [submodule "submodules/tomondt"]
 	path = submodules/tomondt
 	url = https://github.com/TCraig088/tomondt.git
+[submodule "submodules/tomopackets"]
+	path = submodules/tomopackets
+	url = https://github.com/TCraig088/tomopackets.git
