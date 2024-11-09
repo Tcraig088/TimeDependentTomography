@@ -1,4 +1,17 @@
 {
-    "cmake.sourceDirectory": "C:/Users/tcrai/Documents/Code/Python/timedependenttomo/TimeDependentTomography/submodules/tomopackets",
-    "cmake.configureArgs": []
+    "cmake.configureArgs": [
+        "-DVCPKG_MANIFEST_MODE=OFF",
+        "-DVCPKG_TARGET_TRIPLET=-static"
+    ],
+    "vcpkg.target.useStaticLib": true,
+    "vcpkg.target.defaultTriplet": "-static",
+    "vcpkg.general.enable": true,
+    "vcpkg.target.hostTriplet": "x64-windows",
+    "cmake.configureSettings": {
+        "CMAKE_TOOLCHAIN_FILE": "C:/Users/TCraig/Documents/vcpkg/scripts/buildsystems/vcpkg.cmake"
+    },
+    "vcpkg.target.installDependencies": true,
+    "vcpkg.target.preferSystemLibs": false,
+    "vcpkg.target.useManifest": false,
+    "cmake.sourceDirectory": "D:/Code/Python/GitProjects/TimeDependentTomography/submodules/tomopackets"
 }
