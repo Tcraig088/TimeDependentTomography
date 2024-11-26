@@ -8,12 +8,12 @@
     "vcpkg.general.enable": true,
     "vcpkg.target.hostTriplet": "x64-windows",
     "cmake.configureSettings": {
-        "CMAKE_TOOLCHAIN_FILE": "C:/Users/supervisor/vcpkg/scripts/buildsystems/vcpkg.cmake"
+        "CMAKE_TOOLCHAIN_FILE": "C:/Users/TCraig/Documents/vcpkg/scripts/buildsystems/vcpkg.cmake"
     },
     "vcpkg.target.installDependencies": true,
     "vcpkg.target.preferSystemLibs": false,
     "vcpkg.target.useManifest": false,
-    "cmake.sourceDirectory": "C:/Users/supervisor/Documents/GitHub/timc-projects/TimeDependentTomography/submodules/tomopackets",
+    "cmake.sourceDirectory": "D:/Code/Python/GitProjects/TimeDependentTomography/build/cppzmq",
     "files.associations": {
         "algorithm": "cpp",
         "array": "cpp",
