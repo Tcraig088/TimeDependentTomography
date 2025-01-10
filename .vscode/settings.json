@@ -13,7 +13,7 @@
     "vcpkg.target.installDependencies": true,
     "vcpkg.target.preferSystemLibs": false,
     "vcpkg.target.useManifest": false,
-    "cmake.sourceDirectory": "D:/Code/Python/GitProjects/TimeDependentTomography/build/cppzmq",
+    "cmake.sourceDirectory": "D:/Code/Github/TimeDependentTomography/submodules/tomopackets",
     "files.associations": {
         "algorithm": "cpp",
         "array": "cpp",
