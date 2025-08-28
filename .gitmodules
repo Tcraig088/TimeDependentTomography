@@ -16,3 +16,9 @@
 [submodule "submodules/tomopackets"]
 	path = submodules/tomopackets
 	url = https://github.com/TCraig088/tomopackets.git
+[submodule "submodules/tomondt"]
+	path = submodules/tomondt
+	url = https://github.com/TCraig088/tomo-ndt.git
+[submodule "submodules/submodules/tomolive"]
+	path = submodules/submodules/tomolive
+	url = https://github.com/Tcraig088/GRS-RECAST.git
