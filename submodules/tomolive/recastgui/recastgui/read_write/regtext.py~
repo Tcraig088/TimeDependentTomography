@@ -1,0 +1,28 @@
+import os
+import numpy as np
+import pandas as pd
+import csv
+
+def GetDelimit():
+    return ','
+    
+def Read(path):
+    return pd.read_csv(path, delimiter= GetDelimit())
+        
+def Write(path, projection):
+    if projection == 0:
+        if not os.path.exists(path):
+            with open(path, 'w') as f:
+                writer = csv.writer(f, delimiter= GetDelimit())
+                row =['file', 'angle', 'signal', 'pid']
+                writer.writerow(row)
+    else:
+        filelist = pd.read_csv(path, delimiter=GetDelimit())
+        pid = 0
+        for item, row in filelist.iterrows():
+            if projection.signal == row.signal:
+                pid = row.pid+1 
+        with open(path, 'a') as f:
+            writer = csv.writer(f, delimiter=GetDelimit())
+            row =[projection.filename, projection.angle, projection.signal, pid]
+            writer.writerow(row)
