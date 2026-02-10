@@ -1,0 +1,19 @@
+name: tdtomo
+contributions:
+  commands:
+    - id: tdtomo.run
+      title: Run
+      python_name: tdtomo.main:_buildmenu
+    - id: tdtomo.phantom
+      title: Phantom
+      python_name: tdtomo.phantoms:build_phantom_menu
+
+
+  widgets:
+    - command: tdtomo.run
+      display_name: "Run"
+
+  sample_data:
+    - key: phantom
+      command: tdtomo.phantom
+      display_name: Phantoms…
