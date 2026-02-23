@@ -11,18 +11,18 @@ from tomobase.data import BaseImageModel
 from tomobase.log import logger
 from tomobase.environment import GPUContext, proxy
 from tomobase import registers
-from tomobase.phantoms.nanocage import get_nanocage
+
 
 from qtpy.QtWidgets import QWidget, QVBoxLayout, QMenu, QAction, QDockWidget, QLabel, QFrame, QFileDialog, QApplication, QAbstractItemView, QToolButton, QTableWidgetItem
 from qtpy.QtCore import Qt
 
 
-from ...registers import model_controllers, layer_render_types
+from ...registers import data_controllers, plot_render_types
 from tomobase.data import *
 
 
 
-models_table = Table({'Name': ['a'], 'Sample Name': ['b'], 'Type': ['c']})
+plots_table = Table({'Name': ['a'], 'Sample Name': ['b'], 'Type': ['c']})
 _syncing_selections = False
 
 def ensure_options_column(table):

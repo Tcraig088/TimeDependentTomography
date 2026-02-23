@@ -3,7 +3,7 @@ from typing import Callable, Dict, List, Optional, Any, Sequence
 import numpy as np
 
 from napari.types import LayerData
-from tomobase.globals import phantoms_register
+from tomobase.registers import phantoms_register
 
 
 _PHANTOMS: Dict[str, Callable[[], Any]] = {}

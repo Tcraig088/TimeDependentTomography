@@ -5,8 +5,9 @@ import napari
 import collections.abc
 from collections.abc import Iterable 
 
+from tomobase.log import logger
+from tomobase.environment import GPUContext, proxy
 
-from tomobase.globals import logger, proxy, GPUContext
 
 
 from qtpy.QtWidgets import QWidget, QVBoxLayout, QMenu, QAction, QDockWidget, QLabel

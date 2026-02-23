@@ -1,6 +1,7 @@
 from qtpy.QtCore import QObject, Signal
 
-from tomobase.globals import logger, Item, ItemDict
+from tomobase import registers
+from tomobase.log import logger
 
 
 class ModuleDict():
@@ -68,8 +69,13 @@ class ModuleDict():
             
 _modules = ModuleDict()
 
-class ControllerItemDict(ItemDict):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
 
-_controllers = ControllerItemDict()
+model_controllers = registers.Registry(str, object)
+data_controllers = registers.Registry(str, object)
+plot_render_types = registers.Registry(str, int)
+plot_render_types['xy'] = 0 
+
+
+
+layer_render_types = registers.Registry(str, int)
+layer_render_types['Pixel Render'] = 0
