@@ -73,11 +73,10 @@ _modules = ModuleDict()
 model_controllers = registers.Registry(str, object)
 data_controllers = registers.Registry(str, object)
 tilt_controllers = registers.Registry(str, object)
+struct_data_controllers = registers.Registry(str, object)
 
 plot_render_types = registers.Registry(str, int)
 plot_render_types['xy'] = 0 
-
-
 
 layer_render_types = registers.Registry(str, int)
 layer_render_types['Pixel Render'] = 0
