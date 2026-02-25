@@ -1,0 +1,45 @@
+@startuml DataStructures
+
+class BaseDataModel {
+    +id: int
+}
+
+class BaseImageModel{
+    +data: np.array
+    +metadata: dict
+} 
+
+class BaseQuantificationModel{
+    +value: float
+    +unit: str
+}
+
+class Sinogram{
+    +angles: np.array
+    +times: np.array
+}
+
+Sinogram --|> BaseImageModel
+BaseImageModel --|> BaseDataModel
+BaseQuantificationModel --|> BaseDataModel
+
+skinparam classAttributeIconSize 0
+
+class HookRegistry {
+  +register(key: str, target: Callable): void
+  +get(key: str): Callable
+}
+
+class Controller {
+  -registry: HookRegistry
+  +dispatch(hook_key: str, payload: dict): void
+}
+
+class Model
+class View
+
+Controller --> HookRegistry : looks up actions
+Controller --> Model
+Controller --> View
+View ..> Controller
+@enduml

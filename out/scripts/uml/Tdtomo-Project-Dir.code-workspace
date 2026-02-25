@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "../../../../Tdtomo-Project-Dir"
+		},
+		{
+			"name": "TimeDependentTomography",
+			"path": "../../.."
+		}
+	],
+	"settings": {}
+}
