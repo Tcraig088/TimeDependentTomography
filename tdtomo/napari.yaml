@@ -3,7 +3,7 @@ contributions:
   commands:
     - id: tdtomo.run
       title: Run
-      python_name: tdtomo.main:_buildmenu
+      python_name: tdtomo.main:build_gui
     - id: tdtomo.phantom
       title: Phantom
       python_name: tdtomo.phantoms:build_phantom_menu
