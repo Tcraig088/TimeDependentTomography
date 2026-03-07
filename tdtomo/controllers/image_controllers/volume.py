@@ -10,12 +10,7 @@ from .base import ImageTypeController
 class VolumeController(ImageTypeController):
     def __init__(self, model):
         super().__init__(model)
-        self._compatibile_views = ['Pixel Render']
-        self.add_view(layer_render_types['Pixel Render'])
-        
-    def add_view(self, view_type: int):
-        self._check_view(view_type)
-        super().add_view(view_type)
+
         
 
 

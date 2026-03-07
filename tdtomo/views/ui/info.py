@@ -1,3 +1,5 @@
+from xml.parsers.expat import model
+
 import magicgui
 from magicgui.widgets import Container, Label, FileEdit, PushButton, Table
 
@@ -13,7 +15,7 @@ from tomobase.environment import GPUContext, proxy
 from tomobase import registers
 from tomobase.phantoms.nanocage import get_nanocage
 
-from qtpy.QtWidgets import QWidget, QVBoxLayout, QMenu, QAction, QDockWidget, QLabel, QFrame, QFileDialog, QApplication, QAbstractItemView, QToolButton, QTableWidgetItem
+from qtpy.QtWidgets import QWidget, QVBoxLayout, QMenu, QAction, QDockWidget, QLabel, QFrame, QFileDialog, QApplication, QAbstractItemView, QToolButton, QTableWidgetItem, QTreeWidget, QTreeWidgetItem
 from qtpy.QtCore import Qt
 
 from tdtomo.views.ui.image_list import refresh_table
@@ -23,13 +25,37 @@ from ...registers import model_controllers, layer_render_types
 from tomobase.data import *
 
 
-info_widget = Container(labels=False,layout="vertical")
+
+
+
+class  InfoWideget(QTreeWidget):
+    def __init__(self):
+        super().__init__()
+        self.setHeaderLabels(['Name', 'Value'])
+        self.setColumnCount(2)
+        self.setWindowTitle(f"Image Info")
+
+    def add_info(self, _dict, parent=None):
+        for key, value in _dict.items():
+            if isinstance(value, dict):
+                item = QTreeWidgetItem([str(key), ''])
+                self.add_info(value, parent=item)
+            else:
+                item = QTreeWidgetItem([str(key), str(value)])
+            if parent is None:
+                self.addTopLevelItem(item)
+            else:
+                parent.addChild(item)
+
+
+info_widget = InfoWideget()
 
 
 def refresh_info_widget():
     info_widget.clear()
     for key, value in model_controllers.items():
-        info_widget.append(model_controllers[key].info_widget)
+        info_widget.add_info(model_controllers[key].get_info_for_widget())
+
 
 def build_info_widget(viewer: 'napari.viewer.Viewer'):
     """Build the workspace widget for the viewer and dock it on the left.
@@ -50,7 +76,7 @@ def build_info_widget(viewer: 'napari.viewer.Viewer'):
             except Exception:
                 continue
     
-    docked_gui = viewer.window.add_dock_widget(info_widget, name='Model Info', area='left')
+    docked_gui = viewer.window.add_dock_widget(info_widget, name='Image Info', area='left')
 
     model_controllers.removed.connect(refresh_info_widget)
     model_controllers.added.connect(refresh_info_widget)

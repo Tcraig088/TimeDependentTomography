@@ -80,3 +80,4 @@ plot_render_types['xy'] = 0
 
 layer_render_types = registers.Registry(str, int)
 layer_render_types['Pixel Render'] = 0
+layer_render_types['FFT Render'] = 1

@@ -36,15 +36,14 @@ def ensure_options_column(table):
     return 0
 
 
-
 def add_row_menu(table, row, model_name):
     col = ensure_options_column(table)
     btn = QToolButton()
     menu = QMenu(btn)
     
     submenu = menu.addMenu("Views")
-    for view in model_controllers[model_name]._compatibile_views:
-        submenu.addAction(view, lambda v=layer_render_types[view]: model_controllers[model_name].add_view(v))
+    for key, renderer in model_controllers[model_name].renderers.items():
+        submenu.addAction(key, lambda k=key: model_controllers[model_name].add_render(k))
     menu.addAction("Save", model_controllers[model_name].model.to_file)
     menu.addAction("Remove", lambda m=model_name: model_controllers.pop(m))
     btn.setMenu(menu)
@@ -70,17 +69,6 @@ def refresh_table():
     for i, name in enumerate(table['Name']):
         add_row_menu(qt_table, i, name)
  
-
-def sync_info_widget():
-    for key, value in model_controllers.items():
-        value.info_widget.native.hide()
-
-    #check which rows are selected in the table and show the corresponding info widgets
-    selected_rows = models_table.native.selectionModel().selectedRows()
-    for index in selected_rows:
-        model_name = models_table['Name'][index.row()]
-        model_controllers[model_name].info_widget.native.show()
-
 def select_table_rows(viewer: 'napari.viewer.Viewer'):
     global _syncing_selections
     if _syncing_selections:
@@ -90,10 +78,9 @@ def select_table_rows(viewer: 'napari.viewer.Viewer'):
     models_table.native.clearSelection()
     for key, value in model_controllers.items():
         for layer in selected:
-            if layer.name in value._views:
+            if layer.name in value._layers:
                 row = models_table['Name'].index(key)
                 models_table.native.selectRow(row)               
-    sync_info_widget()
     _syncing_selections = False
         
 def select_layers(viewer: 'napari.viewer.Viewer'):
@@ -105,9 +92,8 @@ def select_layers(viewer: 'napari.viewer.Viewer'):
     selected_rows = models_table.native.selectionModel().selectedRows()
     for index in selected_rows:
         model_name = models_table['Name'][index.row()]
-        for layer in model_controllers[model_name]._views.values():
-            viewer.layers.selection.add(layer)   
-    sync_info_widget()   
+        for layer in model_controllers[model_name]._layers.values():
+            viewer.layers.selection.add(layer)      
     _syncing_selections = False         
     
 def build_image_table_widget(viewer: 'napari.viewer.Viewer'):

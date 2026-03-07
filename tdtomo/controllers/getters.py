@@ -1,6 +1,6 @@
 
 import coolname
-from tomobase.data import Volume, Sinogram, Image, PointMap, Heatmap
+from tomobase.data import Volume, Sinogram, Image
 
 from ..registers import model_controllers, tilt_controllers, struct_data_controllers
 
@@ -20,5 +20,5 @@ def get_tilt_controller(model):
 
 
 def get_data_controller(model):
-    if isinstance(model, HeatMap):
-        struct_data_controllers['Bubbly'] = model
+    pass
+        #struct_data_controllers['Bubbly'] = model
