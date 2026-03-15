@@ -7,7 +7,12 @@ contributions:
     - id: tdtomo.phantom
       title: Phantom
       python_name: tdtomo.phantoms:build_phantom_menu
-
+    - id: tdtomo.read_volume
+      title: Read Volume  
+      python_name: tdtomo.io.readers:read_volume
+    - id: tdtomo.read_sinogram
+      title: Read Volume  
+      python_name: tdtomo.io.readers:read_sinogram
 
   widgets:
     - command: tdtomo.run
@@ -17,3 +22,12 @@ contributions:
     - key: phantom
       command: tdtomo.phantom
       display_name: Phantoms…
+
+  readers:
+    - command: tdtomo.read_volume
+      filename_patterns:
+        - "*.rec"
+
+    - command: tdtomo.read_sinogram
+      filename_patterns:
+        - "*.mrc"

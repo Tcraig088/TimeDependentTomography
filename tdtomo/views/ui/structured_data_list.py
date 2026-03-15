@@ -7,7 +7,7 @@ import napari
 import collections.abc
 from collections.abc import Iterable 
 
-from tomobase.data import BaseImageModel
+from tomobase.data import ImageAbstract
 from tomobase.log import logger
 from tomobase.environment import GPUContext, proxy
 from tomobase import registers

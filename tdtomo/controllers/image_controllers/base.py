@@ -9,11 +9,11 @@ from qtpy.QtWidgets import QAbstractItemView, QMenu, QTreeWidget, QTreeWidgetIte
 
 import numpy as np
 from tomobase.utils import set_numpy
-from tomobase.data import BaseImageModel
+from tomobase.data import ImageAbstract
 from napari.qt.threading import thread_worker
 
 InitFn = Callable[..., napari.layers.Layer]
-UpdateFn = Callable[[napari.layers.Layer, Any], None]  # model is Any/BaseImageModel
+UpdateFn = Callable[[napari.layers.Layer, Any], None]  # model is Any/ImageAbstract
 
 
 @dataclass(frozen=True)
@@ -39,11 +39,21 @@ class ImageTypeController:
 
     def get_info_for_widget(self):
         _dict = {}
+        _dict['Sample Name'] = self.model.name
         _dict['Process Name'] = self.model.process_name
-        _dict['Sample Name'] = self.model.sample_name
         _dict['Type'] = type(self.model).__name__
-        _dict['Shape'] = self.model.data.shape
-        _dict['Dtype'] = self.model.data.dtype
+        _dict['Pixel Size (nm)'] = self.model.pixel_size
+
+        _data_dict = {}
+        _data_dict['Shape'] = self.model.values.shape
+        _data_dict['Dtype'] = self.model.values.dtype
+        _data_dict['Min'] = np.round(float(np.min(self.model.data)), 2)
+        _data_dict['Max'] = np.round(float(np.max(self.model.data)), 2)
+        _data_dict['axis'] = self.model.data.dims
+
+
+        _dict['layers'] = {layer.name: type(layer).__name__ for layer in self._layers.values()}
+        _dict['Data'] = _data_dict
         _dict['Metadata'] = self.model.metadata
         return {self.model.process_name: _dict}
 
@@ -104,10 +114,10 @@ class ImageTypeController:
         self._layers.clear()
 
 
-def _compute_pixel_render(model: BaseImageModel):
+def _compute_pixel_render(model: ImageAbstract):
     return set_numpy(model.data)
 
-def pixel_init(model: BaseImageModel, viewer=None, **kwargs):
+def pixel_init(model: ImageAbstract, viewer=None, **kwargs):
     layer_data = _compute_pixel_render(model)
     name = f"{model.process_name} VolRen"
 
@@ -119,19 +129,19 @@ def pixel_init(model: BaseImageModel, viewer=None, **kwargs):
         viewer.add_layer(layer)
     return layer
 
-def pixel_update(layer, model: BaseImageModel):
+def pixel_update(layer, model: ImageAbstract):
     layer.data = _compute_pixel_render(model)
     layer.refresh()
 
 
 @thread_worker
-def _compute_fft(model):
+def _compute_fft(model: ImageAbstract):
     #xp = model.data.__array_namespace__()
     xp = np
     f = xp.fft.fftshift(xp.fft.fft2(model.data))
     return set_numpy(xp.log1p(xp.abs(f)))
 
-def fft_init(model, viewer=None, **kwargs):
+def fft_init(model: ImageAbstract, viewer=None, **kwargs):
     name = f"{model.process_name} FFT"
 
     # placeholder layer so init returns a layer immediately
@@ -154,7 +164,7 @@ def fft_init(model, viewer=None, **kwargs):
     worker.start()
     return layer
 
-def fft_update(layer, model):
+def fft_update(layer, model: ImageAbstract):
     # async re-compute on updates too (optional)
     worker = _compute_fft(model)
 

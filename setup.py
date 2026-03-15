@@ -2,6 +2,7 @@ import os
 import subprocess
 from setuptools import setup, find_packages
 
+'''
 def install_submodule(path):
     """Install a submodule in editable mode."""
     conda_env_path = os.path.join(path, 'conda', 'meta.yaml')
@@ -19,6 +20,9 @@ submodules = [
 # Install each submodule
 for submodule in submodules:
     install_submodule(submodule)
+
+'''
+
 setup(
     name='tdtomo',  # Replace with your package name
     version='0.0.1',  # Replace with your package version

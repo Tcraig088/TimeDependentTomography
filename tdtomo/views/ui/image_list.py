@@ -7,7 +7,7 @@ import napari
 import collections.abc
 from collections.abc import Iterable 
 
-from tomobase.data import BaseImageModel
+from tomobase.data import ImageAbstract
 from tomobase.log import logger
 from tomobase.environment import GPUContext, proxy
 from tomobase import registers
@@ -44,7 +44,7 @@ def add_row_menu(table, row, model_name):
     submenu = menu.addMenu("Views")
     for key, renderer in model_controllers[model_name].renderers.items():
         submenu.addAction(key, lambda k=key: model_controllers[model_name].add_render(k))
-    menu.addAction("Save", model_controllers[model_name].model.to_file)
+    menu.addAction("Save", model_controllers[model_name].model.write)
     menu.addAction("Remove", lambda m=model_name: model_controllers.pop(m))
     btn.setMenu(menu)
     btn.setPopupMode(QToolButton.InstantPopup)

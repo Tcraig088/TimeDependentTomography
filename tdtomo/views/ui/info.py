@@ -9,7 +9,7 @@ import napari
 import collections.abc
 from collections.abc import Iterable 
 
-from tomobase.data import BaseImageModel
+from tomobase.data import ImageAbstract
 from tomobase.log import logger
 from tomobase.environment import GPUContext, proxy
 from tomobase import registers
@@ -24,16 +24,13 @@ from tdtomo.views.ui.image_list import refresh_table
 from ...registers import model_controllers, layer_render_types
 from tomobase.data import *
 
-
-
-
-
 class  InfoWideget(QTreeWidget):
     def __init__(self):
         super().__init__()
-        self.setHeaderLabels(['Name', 'Value'])
         self.setColumnCount(2)
         self.setWindowTitle(f"Image Info")
+
+        self.add_info({'Active Images': len(model_controllers)})
 
     def add_info(self, _dict, parent=None):
         for key, value in _dict.items():
@@ -50,9 +47,9 @@ class  InfoWideget(QTreeWidget):
 
 info_widget = InfoWideget()
 
-
 def refresh_info_widget():
     info_widget.clear()
+    info_widget.add_info({'Active Images': len(model_controllers)})
     for key, value in model_controllers.items():
         info_widget.add_info(model_controllers[key].get_info_for_widget())
 
