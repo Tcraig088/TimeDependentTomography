@@ -1,4 +1,4 @@
-import tomosipo as tp
+#import tomosipo as tp
 import os 
 import numpy as np
 

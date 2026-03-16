@@ -6,7 +6,8 @@ import collections.abc
 from collections.abc import Iterable 
 
 
-from tomobase.registers import logger, proxy, GPUContext, image_datatypes_register
+from tomobase.registers import logger
+from tomobase.environment import GPUContext, proxy
 
 
 from qtpy.QtWidgets import QWidget, QVBoxLayout, QMenu, QAction, QDockWidget, QLabel

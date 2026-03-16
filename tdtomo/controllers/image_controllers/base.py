@@ -25,12 +25,15 @@ class RendererSpec:
 class ImageTypeController:
     # registry: renderer-name -> (init, update)
     renderers: Dict[str, RendererSpec] = {}
+    render_settings_changed = None
 
     def __init__(self, model):
         self.model = model
         self._viewer = None
         self._layers: Dict[str, napari.layers.Layer] = {}
         self._callbacks: Dict[str, Callable[[], None]] = {}
+        self._render_settings = {}
+
 
         try:
             self._viewer = napari.current_viewer()
@@ -114,70 +117,8 @@ class ImageTypeController:
         self._layers.clear()
 
 
-def _compute_pixel_render(model: ImageAbstract):
-    return set_numpy(model.data)
-
-def pixel_init(model: ImageAbstract, viewer=None, **kwargs):
-    layer_data = _compute_pixel_render(model)
-    name = f"{model.process_name} VolRen"
-
-    contrast_limits = kwargs.pop("contrast_limits", (0, float(np.max(layer_data) * 2.0)))
-    layer = napari.layers.Image(layer_data, name=name, contrast_limits=contrast_limits, **kwargs)
-
-    # If you want it added to viewer immediately:
-    if viewer is not None:
-        viewer.add_layer(layer)
-    return layer
-
-def pixel_update(layer, model: ImageAbstract):
-    layer.data = _compute_pixel_render(model)
-    layer.refresh()
 
 
-@thread_worker
-def _compute_fft(model: ImageAbstract):
-    #xp = model.data.__array_namespace__()
-    xp = np
-    f = xp.fft.fftshift(xp.fft.fft2(model.data))
-    return set_numpy(xp.log1p(xp.abs(f)))
-
-def fft_init(model: ImageAbstract, viewer=None, **kwargs):
-    name = f"{model.process_name} FFT"
-
-    # placeholder layer so init returns a layer immediately
-    placeholder = np.zeros((1, 1), dtype=np.float32)
-    contrast_limits = kwargs.pop("contrast_limits", (0.0, 1.0))
-    layer = napari.layers.Image(placeholder, name=name, contrast_limits=contrast_limits, **kwargs)
-
-    if viewer is not None:
-        viewer.add_layer(layer)
-
-    worker = _compute_fft(model)
-
-    @worker.returned.connect
-    def _on_done(layer_data):
-        # update the existing layer in-place
-        layer.data = layer_data
-        layer.contrast_limits = (0.0, float(np.max(layer_data) * 2.0))
-        layer.refresh()
-
-    worker.start()
-    return layer
-
-def fft_update(layer, model: ImageAbstract):
-    # async re-compute on updates too (optional)
-    worker = _compute_fft(model)
-
-    @worker.returned.connect
-    def _on_done(layer_data):
-        layer.data = layer_data
-        layer.contrast_limits = (0.0, float(np.max(layer_data) * 2.0))
-        layer.refresh()
-
-    worker.start()
-
-ImageTypeController.register_renderer("Pixel Render", pixel_init, pixel_update)
-ImageTypeController.register_renderer("FFT Render", fft_init, fft_update)
 
 
         
