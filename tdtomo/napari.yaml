@@ -13,6 +13,9 @@ contributions:
     - id: tdtomo.read_sinogram
       title: Read Volume  
       python_name: tdtomo.io.readers:read_sinogram
+    - id: tdtomo.read_vndt
+      title: Read Volume Time Series
+      python_name: tdtomo.io.readers:read_vndt
 
   widgets:
     - command: tdtomo.run
@@ -31,3 +34,10 @@ contributions:
     - command: tdtomo.read_sinogram
       filename_patterns:
         - "*.mrc"
+
+    - command: tdtomo.read_vndt
+      accepts_directories: true
+      filename_patterns:
+        - "*.zarr"
+        - "*.nc"
+        - "*.vmf"

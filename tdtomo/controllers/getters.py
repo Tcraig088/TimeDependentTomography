@@ -1,10 +1,11 @@
 
 import coolname
 from tomobase.data import Volume, Sinogram, Image
+from tomondt.data import VolumeTimeSeries
 
 from ..registers import model_controllers, tilt_controllers, struct_data_controllers
 
-from .image_controllers import VolumeController, SinogramController
+from .image_controllers import VolumeController, SinogramController, VolumeNDtController
 from .tilt import TiltController
 
 def get_image_controller(model):
@@ -12,6 +13,8 @@ def get_image_controller(model):
         model_controllers[model.process_name] = VolumeController(model)
     elif isinstance(model, Sinogram):
         model_controllers[model.process_name] = SinogramController(model)
+    elif isinstance(model, VolumeTimeSeries):
+        model_controllers[model.process_name] = VolumeNDtController(model)
     else:
         raise ValueError(f"Model type {type(model)} is not supported")
     
