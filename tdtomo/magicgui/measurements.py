@@ -37,18 +37,11 @@ class MeasurementsSelectWidget(Container):
         super().__init__(widgets=[self.select], layout="vertical", **kwargs)
 
         self.select.changed.connect(self._emit_changed)
-        self.native.installEventFilter(self)
+        struct_data_controllers.added.connect(self.refresh_choices)
+        struct_data_controllers.removed.connect(self.refresh_choices)
+        struct_data_controllers.renamed.connect(self.refresh_choices)
+        struct_data_controllers.updated.connect(self.refresh_choices)
 
-    def eventFilter(self, obj, event):
-        if obj is self.native and not self._choices_loaded:
-            try:
-                from qtpy.QtCore import QEvent
-                if event.type() == QEvent.Show:
-                    self.refresh_choices()
-                    self._choices_loaded = True
-            except Exception:
-                pass
-        return False
 
     def refresh_choices(self):
         if self._choices_getter is None:
@@ -89,17 +82,5 @@ class MeasurementsSelectWidget(Container):
             pass
         self._emit_changed()
         
-        
-def _validate_image_widget(annotation):
-    if annotation in registers.image_types.values():
-        return True
 
-    if hasattr(annotation, "__origin__") and annotation.__origin__ is Union and all(isinstance(t, type) and t.__name__ in registers.image_types for t in annotation.__args__):
-        return True
-
-    if get_origin(annotation) is Union:
-        for arg in get_args(annotation):
-            if isinstance(arg, type) and arg.__name__ in registers.image_types:
-                return True
-    
 magic_widgets['Measurement'] = (MeasurementsSelectWidget, None, {"choices_getter": lambda: [(name, ctrl.model) for name, ctrl in struct_data_controllers.items()]})

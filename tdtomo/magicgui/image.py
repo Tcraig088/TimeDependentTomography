@@ -31,17 +31,28 @@ class ImageComboBoxWidget(Container):
         super().__init__(widgets=[self.combo], layout="vertical", **kwargs)
 
         self.combo.changed.connect(self._emit_changed)
+
+
         self.refresh_choices()
+        model_controllers.added.connect(self.refresh_choices)
+        model_controllers.removed.connect(self.refresh_choices)
+        model_controllers.renamed.connect(self.refresh_choices)
+        model_controllers.updated.connect(self.refresh_choices)
 
         if value is not None:
             self.value = value
 
-    def refresh_choices(self):
+    def refresh_choices(self, *args):
+        print("Refreshing image choices...")
         if self._choices_getter is None:
             return
+        print("Getting new choices...")
         self.combo.choices = list(self._choices_getter())
+        print(f"New choices: {self.combo.choices}, {list(self._choices_getter())}")
+        self.combo.native.update()
+        self.native.update()
 
-    def _emit_changed(self, *_):
+    def _emit_changed(self, *args):
         self.changed.emit(self.value)
 
     @property

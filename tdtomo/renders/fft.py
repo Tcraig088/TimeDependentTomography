@@ -11,7 +11,7 @@ from ..controllers import ImageTypeController
 def _compute_fft(model: ImageAbstract):
     #xp = model.data.__array_namespace__()
     xp = np
-    f = xp.fft.fftshift(xp.fft.fft2(model.data))
+    f = xp.fft.fftshift(xp.fft.fftn(model.data))
     return set_numpy(xp.log1p(xp.abs(f)))
 
 def fft_init(model: ImageAbstract, viewer=None, **kwargs):

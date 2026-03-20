@@ -47,19 +47,11 @@ class TiltSchemeWidget(Container):
         if value is not None:
             self.value = value
 
-        # refresh when the native widget is shown
-        self.native.installEventFilter(self)
+        tilt_controllers.added.connect(self.refresh_choices)
+        tilt_controllers.removed.connect(self.refresh_choices)
+        tilt_controllers.renamed.connect(self.refresh_choices)  
+        tilt_controllers.updated.connect(self.refresh_choices)
 
-    def eventFilter(self, obj, event):
-        if obj is self.native and not self._choices_loaded:
-            try:
-                from qtpy.QtCore import QEvent
-                if event.type() == QEvent.Show:
-                    self.refresh_choices()
-                    self._choices_loaded = True
-            except Exception:
-                pass
-        return False
 
     def refresh_choices(self):
         if self._choices_getter is None:
