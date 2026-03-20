@@ -1,3 +1,4 @@
+from typing import Tuple, Callable, Any, Dict, Union
 from qtpy.QtCore import QObject, Signal
 
 from tomobase import registers
@@ -81,3 +82,5 @@ plot_render_types['xy'] = 0
 layer_render_types = registers.Registry(str, int)
 layer_render_types['Pixel Render'] = 0
 layer_render_types['FFT Render'] = 1
+
+magic_widgets = registers.Registry(str, object)
