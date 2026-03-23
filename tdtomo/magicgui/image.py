@@ -1,73 +1,27 @@
-from typing import  Callable, Any, Union,  get_origin, get_args, Iterable, Optional
+from typing import  Union,  get_origin, get_args, Optional
 from types import UnionType
-from unicodedata import name
-from magicgui.widgets import Container, ComboBox
-from collections.abc import Iterable 
+from magicgui.widgets import ComboBox
 import inspect
-from typing import Iterable, Optional
-from psygnal import Signal
 
 from tomobase.data import ImageAbstract
-from tomobase import registers
-
 from ..registers import magic_widgets, model_controllers
+from .components import RegisteredComboBox
 
-class ImageComboBoxWidget(Container):
-    changed = Signal(object)
-
+class ImageComboBoxWidget(RegisteredComboBox):
     def __init__(
         self,
         *,
         value: Optional[ImageAbstract] = None,
-        choices_getter: Optional[Callable[[], Iterable[tuple[str, Any]]]] = None,
         **kwargs,
     ):
         for k in ("nullable", "annotation", "gui_only", "bind"):
             kwargs.pop(k, None)
 
-        self._choices_getter = choices_getter
-        self.combo = ComboBox(label="", choices=[])
+        self.register = model_controllers
+        self.dropbox = ComboBox(label="", choices=[])
 
-        super().__init__(widgets=[self.combo], layout="vertical", **kwargs)
+        super().__init__(value=value, widgets=[self.dropbox], register=model_controllers, **kwargs)
 
-        self.combo.changed.connect(self._emit_changed)
-
-
-        self.refresh_choices()
-        model_controllers.added.connect(self.refresh_choices)
-        model_controllers.removed.connect(self.refresh_choices)
-        model_controllers.renamed.connect(self.refresh_choices)
-        model_controllers.updated.connect(self.refresh_choices)
-
-        if value is not None:
-            self.value = value
-
-    def refresh_choices(self, *args):
-        print("Refreshing image choices...")
-        if self._choices_getter is None:
-            return
-        print("Getting new choices...")
-        self.combo.choices = list(self._choices_getter())
-        print(f"New choices: {self.combo.choices}, {list(self._choices_getter())}")
-        self.combo.native.update()
-        self.native.update()
-
-    def _emit_changed(self, *args):
-        self.changed.emit(self.value)
-
-    @property
-    def value(self) -> ImageAbstract:
-        return self.combo.value
-
-    @value.setter
-    def value(self, v: ImageAbstract):
-        try:
-            self.combo.value = v
-        except Exception:
-            pass
-        self._emit_changed()
-        
-        
 def _is_none_type(x):
     return x is type(None)
 
@@ -92,4 +46,4 @@ def _validate_image_widget(annotation):
 
     return False
     
-magic_widgets['Image'] = (ImageComboBoxWidget, _validate_image_widget, {"choices_getter": lambda: [(name, ctrl.model) for name, ctrl in model_controllers.items()]})
+magic_widgets['Image'] = (ImageComboBoxWidget, _validate_image_widget)

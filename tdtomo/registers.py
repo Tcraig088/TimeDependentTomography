@@ -84,3 +84,7 @@ layer_render_types['Pixel Render'] = 0
 layer_render_types['FFT Render'] = 1
 
 magic_widgets = registers.Registry(str, object)
+
+visualize_procedures = registers.Registry(str, Callable)
+visualize_procedures._hook = 'is_tdtomo_visualizer'
+visualize_procedures.update(explicit=False)

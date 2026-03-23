@@ -5,13 +5,15 @@ from qtpy.QtWidgets import QMenu, QLabel
 from qtpy.QtCore import Qt
 
 from .views.menus import build_utilities_menu, build_tomography_menu, build_tilting_menu
-
+from tomobase.plugins import bootstrap
 
 #from tomobase.globals import logger
 
 
 @magicgui.magicgui(call_button='Setup Menu')
 def build_menu():
+    
+    bootstrap()
     viewer = napari.current_viewer()
     menu = QMenu('Continuous Tomography', viewer.window.main_menu)  # explicit parent
     viewer.window.main_menu.addMenu(menu)
@@ -23,10 +25,8 @@ def build_menu():
     submenu = menu.addMenu('Tilting')
     build_tilting_menu(viewer, submenu)
     
-    submenu = menu.addMenu('Tomography')
-    build_tomography_menu(viewer, submenu)
+    build_tomography_menu(viewer, menu)
     
-
     viewer.window.remove_dock_widget(build_menu.native)
     return 
 

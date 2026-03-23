@@ -1,33 +1,37 @@
 import inspect
-import itertools
 from magicgui.widgets import Select
-
+import copy
 
 from .magicgui import *
 from .registers import magic_widgets
 from tomobase.log import logger
 
-def magic_gui_dict_builder(func):
-    logger.debug(f"Building magicgui dict for function {func.__name__}")
+def custom_magicgui_hook(func):
     sig = inspect.signature(func)
     func._magicgui = getattr(func, '_magicgui', {})
-    logger.debug(f"Function signature: {sig}, func._magicgui before: {func._magicgui}")
     for param in sig.parameters.values():
-        logger.debug(f"Processing parameter: {param.name}, annotation: {param.annotation}")
         for key, value in magic_widgets.items():
-            logger.debug(f"Checking against magic widget: {key}, value: {value}")
             if value[1] is not None:
                 if value[1](param.annotation):
-                    logger.debug(f"Parameter {param.name} matches magic widget: {key}")
-                    func._magicgui[param.name] = {
-                        "widget_type": value[0],
-                        **value[2]
-                    }
+                    func._magicgui[param.name] = {"widget_type": value[0]}
                 
             if param.name == 'measurements':
-                logger.debug(f"Special case for 'measurements' parameter, annotation: {param.annotation}")
-                func._magicgui[param.name] = {
-                    "widget_type": value[0],
-                    **value[2]
-                }
+                func._magicgui[param.name] = {"widget_type": value[0]}
     return func
+
+
+def visualize_hook(func):
+    def decorator(*args, **kwargs):
+        func(*args, **kwargs)
+        
+        func.tomobase_name = kwargs.get("name", func.__name__)
+        func.is_tdtomo_visualizer = True
+        func.tomobase_category = kwargs.get("category", 0)
+        if func.__name__ == func.tomobase_name:
+            func.tomobase_name = copy.deepcopy(func.__name__)
+            func.tomobase_name = func.tomobase_name.replace('_', ' ').title()
+        return func
+    return decorator
+
+
+

@@ -19,9 +19,9 @@ from tomobase.tiltschemes import TiltScheme
 from qtpy.QtWidgets import QWidget, QVBoxLayout, QMenu, QAction, QDockWidget, QLabel
 from qtpy.QtCore import Qt
 
-from ...registers import model_controllers, layer_render_types, tilt_controllers
+from ...registers import model_controllers, layer_render_types, tilt_controllers, visualize_procedures
 from ...controllers.getters import get_image_controller
-from ...hooks import magic_gui_dict_builder
+from ...hooks import custom_magicgui_hook
 
 
 from dataclasses import dataclass
@@ -41,11 +41,18 @@ def build_tomography_menu(viewer, parent_menu):
         else:
             _menus[key] = _menus[inheritor[0]].addMenu(key)
     
-    for key, value in registers.processes.items():
+    for key, value in itertools.chain(registers.processes.items()):
         category = registers.categories.get_key(value.tomobase_category)
         if category in _menus:
             action = _menus[category].addAction(key)
             action.triggered.connect(lambda x, process=value: build_process_widget(process, viewer))
+            
+    
+    for key, value in visualize_procedures.items():
+        category = registers.categories.get_key(value.tomobase_category)
+        if category in _menus:
+            action = _menus[category].addAction(key)
+            action.triggered.connect(lambda x, process=value: build_visual_widget(process, viewer))
 
 def build_process_widget(process, viewer):
     sig = inspect.signature(process)
@@ -101,9 +108,14 @@ def build_process_widget(process, viewer):
         return None  # important: do not block magicgui
 
     # force wrapper to present the same signature to magicgui
-    threaded_process = magic_gui_dict_builder(threaded_process)
+    threaded_process = custom_magicgui_hook(threaded_process)
     threaded_process.__signature__ = sig  # type: ignore[attr-defined]
     gui = magicgui.magicgui(threaded_process, call_button=True, auto_call=False, **threaded_process._magicgui)
     threaded_process._gui = gui  # inject reference so wrapper can disable the button
 
     viewer.window.add_dock_widget(gui, area="right")
+    
+    
+def build_visual_widget(process, viewer):
+    process = custom_magicgui_hook(process)
+    gui = magicgui.magicgui(process, call_button=True, auto_call=False, **process._magicgui)
