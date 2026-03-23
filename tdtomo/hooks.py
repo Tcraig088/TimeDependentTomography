@@ -4,7 +4,7 @@ import copy
 
 from .magicgui import *
 from .registers import magic_widgets
-from tomobase.log import logger
+from tomobase.core.log import logger
 
 def custom_magicgui_hook(func):
     sig = inspect.signature(func)

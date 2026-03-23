@@ -1,7 +1,7 @@
 import pathlib
 
 from tomobase.data import ImageAbstract
-from tomobase.registers.categories import categories
+from tomobase.core.registers.categories import categories
 
 from ...hooks import visualize_hook
 
