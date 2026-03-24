@@ -8,9 +8,9 @@ import inspect
 import functools
 from napari.qt.threading import thread_worker
 
-from tomobase import registers
-from tomobase.log import logger
-from tomobase.environment import GPUContext, proxy
+from tomobase.core import registers
+from tomobase.core.log import logger
+from tomobase.core.environment import GPUContext, proxy
 
 
 from qtpy.QtWidgets import QWidget, QVBoxLayout, QMenu, QAction, QDockWidget, QLabel

@@ -6,8 +6,8 @@ import collections.abc
 from collections.abc import Iterable 
 
 
-from tomobase.log import logger
-from tomobase import registers
+from tomobase.core.log import logger
+from tomobase.core import registers
 
 from ...controllers.getters import get_image_controller
 from qtpy.QtWidgets import QWidget, QVBoxLayout, QMenu, QAction, QDockWidget, QLabel

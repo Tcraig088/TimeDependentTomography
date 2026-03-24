@@ -1,8 +1,8 @@
 from typing import Tuple, Callable, Any, Dict, Union
 from qtpy.QtCore import QObject, Signal
 
-from tomobase import registers
-from tomobase.log import logger
+from tomobase.core import registers
+from tomobase.core.log import logger
 
 
 class ModuleDict():

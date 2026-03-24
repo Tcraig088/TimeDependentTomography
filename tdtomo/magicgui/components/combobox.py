@@ -2,7 +2,7 @@ from typing import Any, Optional
 from magicgui.widgets import Container
 from qtpy.QtCore import QTimer
 
-from tomobase.log import logger
+from tomobase.core.log import logger
 
 class RegisteredComboBox(Container):
     def __init__(

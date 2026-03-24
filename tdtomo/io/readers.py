@@ -6,7 +6,7 @@ from skimage.measure import marching_cubes
 
 from tomondt.data import VolumeTimeSeries
 
-from tomobase.log import logger
+from tomobase.core.log import logger
 from ..controllers.getters import get_image_controller
 
 def read_volume(path):

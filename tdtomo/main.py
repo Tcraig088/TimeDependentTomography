@@ -5,7 +5,7 @@ from qtpy.QtWidgets import QMenu, QLabel
 from qtpy.QtCore import Qt
 
 from .views.menus import build_utilities_menu, build_tomography_menu, build_tilting_menu
-from tomobase.plugins import bootstrap
+from tomobase.core import bootstrap
 
 #from tomobase.globals import logger
 

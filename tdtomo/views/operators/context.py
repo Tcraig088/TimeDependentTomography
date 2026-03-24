@@ -5,8 +5,8 @@ import napari
 import collections.abc
 from collections.abc import Iterable 
 
-from tomobase.log import logger
-from tomobase.environment import GPUContext, proxy
+from tomobase.core.log import logger
+from tomobase.core.environment import GPUContext, proxy
 
 
 
