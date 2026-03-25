@@ -5,3 +5,13 @@ data/
 build/
 .vscode/
 napari-2/
+
+# Ignore Python cache files and directories
+__pycache__/
+*.py[cod]
+build/
+
+docs/_build/*
+docs/.doctrees/*
+docs/_static/*
+docs/_sources/*

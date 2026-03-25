@@ -4,7 +4,7 @@ import magicgui
 from qtpy.QtWidgets import QMenu, QLabel
 from qtpy.QtCore import Qt
 
-from .views.menus import build_utilities_menu, build_tomography_menu, build_tilting_menu
+from .backends.qt.views.menus import build_utilities_menu, build_tomography_menu
 from tomobase.core import bootstrap
 
 #from tomobase.globals import logger
@@ -12,25 +12,19 @@ from tomobase.core import bootstrap
 
 @magicgui.magicgui(call_button='Setup Menu')
 def build_menu():
-    
-    bootstrap()
     viewer = napari.current_viewer()
-    menu = QMenu('Continuous Tomography', viewer.window.main_menu)  # explicit parent
+    menu = QMenu('Continuous Tomography', viewer.window.main_menu)
     viewer.window.main_menu.addMenu(menu)
     
-
     submenu = menu.addMenu('Utilities')
     build_utilities_menu(viewer, submenu)
-    
-    submenu = menu.addMenu('Tilting')
-    build_tilting_menu(viewer, submenu)
-    
     build_tomography_menu(viewer, menu)
     
     viewer.window.remove_dock_widget(build_menu.native)
     return 
 
 def build_gui():
+    bootstrap(qt_enabled=True)
     note = QLabel("Welcome to the Continuous Tomography Module")
     build_menu.native.layout().insertWidget(0, note)
     return build_menu  # return the FunctionGui object itself
